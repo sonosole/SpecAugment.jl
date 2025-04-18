@@ -1,6 +1,6 @@
 name = "SpecAugment"
 uuid = "03bfb08c-7145-41e0-9a8a-bfc2110fc62b"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Sole sonosole@163.com>"]
 
 
