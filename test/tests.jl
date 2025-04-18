@@ -48,3 +48,14 @@ annotate!(125,     900, "clean",      :white)
 annotate!(125+250, 900, "randscale",  :white)
 annotate!(125+500, 900, "sinscale",   :white)
 
+
+## -------------------------------------
+pflip = flip(p, dims=1);
+plot(f, p, label="clean", fg_legend = :transparent, ylims=(-0.1, 5)); 
+plot!(f, pflip, label="flipped", framestyle=:zerolines)
+
+Xflip = flip(X, dims=(1,2));
+heatmap(hcat(X, ones(1024,1), Xflip))
+annotate!(125,     900, "clean",   :white)
+annotate!(125+250, 900, "flipped", :black)
+
