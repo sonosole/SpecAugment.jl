@@ -91,3 +91,38 @@ annotate!(125,     900, "clean",     :white)
 annotate!(125+250, 900, "stretched", :white)
 annotate!(125+500, 200, "stretched", :white)
 
+Xstretch1 = stretch(X, 0.5, 0.9, dim=2);
+Xstretch2 = stretch(X, 0.9, 0.5, dim=2);
+heatmap(hcat(X, ones(1024,1), Xstretch1, ones(1024,1), Xstretch2), ticks=nothing)
+annotate!(125,     900, "clean",     :white)
+annotate!(125+250, 900, "stretched", :white)
+annotate!(125+500, 900, "stretched", :white)
+
+
+## -------------------------------------
+psqrt = sqrtwrap(p, 0.7);
+pquad = quadwrap(p, 0.7);
+plt1 = plot(f, p, label="clean", fg_legend = :transparent, linewidth=2); 
+plot!(f, psqrt, label="sqrtwrap", framestyle=:zerolines);
+plot!(f, pquad, label="quadwrap", framestyle=:zerolines);
+psin =    sinwrap(p, 30, 0.9);
+pabs = abssinwrap(p, 8, 0.9);
+plt2 = plot(f, p, label="clean", fg_legend = :transparent, linewidth=2); 
+plot!(f, psin, label="sinwrap", framestyle=:zerolines);
+plot!(f, pabs, label="abssinwrap", framestyle=:zerolines);
+plot(plt1, plt2, layout=(2,1))
+
+Xsqrt = sqrtwrap(X, 0.6, dim=1);
+Xquad = quadwrap(X, 0.6, dim=1);
+plt1  = heatmap(hcat(X, ones(1024,1), Xsqrt, ones(1024,1), Xquad), ticks=nothing)
+annotate!(125,     900, "clean", :white)
+annotate!(125+250, 900, "sqrtwrap",  :white)
+annotate!(125+500, 900, "quadwrap",   :white)
+Xsin =    sinwrap(X, 2, 0.9);
+Xabs = abssinwrap(X, 2,-0.9);
+plt2 = heatmap(hcat(X, ones(1024,1), Xsin, ones(1024,1), Xabs), ticks=nothing)
+annotate!(125,     900, "clean", :white)
+annotate!(125+250, 900, "sinwrap",  :white)
+annotate!(125+500, 900, "abssinwrap",   :white)
+plot(plt1, plt2, layout=(2,1))
+
