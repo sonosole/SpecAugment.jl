@@ -63,7 +63,7 @@ addrandn(x::AbstractArray; dims=1, snr=10) -> y::AbstractArray
 let's apply them to spectrum without time information
 
 <details>
-<summary> Code </summary>
+
 ```julia
 prand = addrand(p, dims=1, snr=5);
 prandn = addrandn(p, dims=1, snr=1);
@@ -71,6 +71,7 @@ plot(f, p, label="clean", fg_legend = :transparent, ylims=(-0.1, 5));
 plot!(f, prand, label="5dB rand", framestyle=:zerolines); 
 plot!(f, prandn, label="1dB randn", xlabel="frequency Hz")
 ```
+
 </details>
 
 ![addnoise](./images/addnoise.png)
@@ -78,7 +79,7 @@ plot!(f, prandn, label="1dB randn", xlabel="frequency Hz")
 and to time-frequency spectrum
 
 <details>
-<summary> Code </summary>
+
 ```julia
 Xrand  = addrand(X, dims=(1,2), snr=-5);
 Xrandn = addrandn(X, dims=(1,2), snr=-8);
@@ -87,6 +88,7 @@ annotate!(125,     900, "clean",      :white)
 annotate!(125+250, 900, "-5dB rand",  :white)
 annotate!(125+500, 900, "-8dB randn", :white)
 ```
+
 </details>
 
 ![addnoise](./images/addnoise-tf.png)
@@ -116,7 +118,7 @@ sinscale(x::AbstractArray,
 let's apply them to spectrum without time information
 
 <details>
-<summary> Code </summary>
+
 ```julia
 prand = randscale(p, 0.8, 1.2, dims=1);
 psin = sinscale(p, 0.7, 1.3, dims=1);
@@ -124,6 +126,7 @@ plot(f, p, label="clean", fg_legend = :transparent, ylims=(-0.1, 5));
 plot!(f, prand, label="randscale", framestyle=:zerolines); 
 plot!(f, psin, label="sinscale", xlabel="frequency Hz")
 ```
+
 </details>
 
 ![scale](./images/scale-noise-sin.png)
@@ -131,7 +134,7 @@ plot!(f, psin, label="sinscale", xlabel="frequency Hz")
 and to time-frequency spectrum
 
 <details>
-<summary> Code </summary>
+
 ```julia
 Xrand = randscale(X, 0.2, 1.5, dims=(1,2));
 Xsin = sinscale(X, 0.3, 1.6, dims=(1,2));
@@ -140,6 +143,7 @@ annotate!(125,     900, "clean",      :white)
 annotate!(125+250, 900, "randscale",  :white)
 annotate!(125+500, 900, "sinscale",   :white)
 ```
+
 </details>
 
 ![scale](./images/scale-noise-sin-tf.png)
@@ -155,12 +159,13 @@ flip(x::AbstractArray; dims::Union{Int,Dims}=1) -> y::AbstractArray
 let's apply it to spectrum without time information
 
 <details>
-<summary> Code </summary>
+
 ```julia
 pflip = flip(p, dims=1);
 plot(f, p, label="clean", fg_legend = :transparent, ylims=(-0.1, 5)); 
 plot!(f, pflip, label="flipped", framestyle=:zerolines)
 ```
+
 </details>
 
 ![flip](./images/flipped.png)
@@ -168,13 +173,14 @@ plot!(f, pflip, label="flipped", framestyle=:zerolines)
 and to time-frequency spectrum
 
 <details>
-<summary> Code </summary>
+
 ```julia
 Xflip = flip(X, dims=(1,2));
 heatmap(hcat(X, ones(1024,1), Xflip))
 annotate!(125,     900, "clean",   :white)
 annotate!(125+250, 900, "flipped", :black)
 ```
+
 </details>
 
 ![flip](./images/flipped-tf.png)
@@ -183,9 +189,7 @@ annotate!(125+250, 900, "flipped", :black)
 
 Make the spectrum peak more `slim` or `fat` along dimension `dims`, the dB difference between `x` and the threshold `T` would be scaled by a positive `ratio`, that is
 
-    10log10(y) - 10log10(T)           1
-    ─────────── = ───
-    10log10(x) - 10log10(T)        ratio
+    [10log10(y) - 10log10(T) ] / [10log10(x) - 10log10(T)] = 1/ratio
 
 where T = target * (xmax - xmin) + xmin,   xmax = maximum(`x`; `dims`),  xmin = minimum(`x`; `dims`)
 
@@ -202,7 +206,7 @@ slimorfat(x::AbstractArray{T};
 let's apply it to spectrum without time information
 
 <details>
-<summary> Code </summary>
+
 ```julia
 pslim = slimorfat(p, ratio=0.7);
 pfatt = slimorfat(p, ratio=2);
@@ -210,6 +214,7 @@ plot(f, p, label="clean", fg_legend = :transparent, linewidth=2);
 plot!(f, pslim, label="slim", framestyle=:zerolines); 
 plot!(f, pfatt, label="fat", xlabel="frequency Hz")
 ```
+
 </details>
 
 ![slim or fat](./images/slimorfat.png)
@@ -217,7 +222,7 @@ plot!(f, pfatt, label="fat", xlabel="frequency Hz")
 and to time-frequency spectrum
 
 <details>
-<summary> Code </summary>
+
 ```julia
 Xslim = slimorfat(X, dims=(1,2), ratio=0.8);
 Xfatt = slimorfat(X, dims=(1,2), ratio=4);
@@ -226,6 +231,7 @@ annotate!(125,     900, "clean", :white)
 annotate!(125+250, 900, "slim",  :white)
 annotate!(125+500, 900, "fat",   :white)
 ```
+
 </details>
 
 ![slim or fat](./images/slimorfat-tf.png)
@@ -243,7 +249,8 @@ stretch(s::AbstractArray{T},
 let's apply it to spectrum without time information
 
 <details>
-<summary> Code </summary>
+
+
 ```julia
 pstretch1 = stretch(p, 0.2, 0.7, dim=1);
 pstretch2 = stretch(p, 0.7, 0.2, dim=1);
@@ -253,6 +260,7 @@ plt2=plot(f, p, label="clean", fg_legend = :transparent);
 plot!(f, pstretch2, label="stretched", framestyle=:zerolines)
 plot(plt1, plt2, layout=(2,1))
 ```
+
 </details>
 
 ![stretch](./images/stretch.png)
@@ -260,7 +268,7 @@ plot(plt1, plt2, layout=(2,1))
 and to time-frequency spectrum at frequency dimension
 
 <details>
-<summary> Code </summary>
+
 ```julia
 Xstretch1 = stretch(X, 0.1, 0.6, dim=1);
 Xstretch2 = stretch(X, 0.6, 0.1, dim=1);
@@ -269,6 +277,7 @@ annotate!(125,     900, "clean",     :white)
 annotate!(125+250, 900, "stretched", :white)
 annotate!(125+500, 200, "stretched", :white)
 ```
+
 </details>
 
 ![stretch](./images/stretch-f.png)
@@ -276,7 +285,7 @@ annotate!(125+500, 200, "stretched", :white)
 and to time-frequency spectrum at time dimension
 
 <details>
-<summary> Code </summary>
+
 ```julia
 Xstretch1 = stretch(X, 0.5, 0.9, dim=2);
 Xstretch2 = stretch(X, 0.9, 0.5, dim=2);
@@ -285,6 +294,7 @@ annotate!(125,     900, "clean",     :white)
 annotate!(125+250, 900, "stretched", :white)
 annotate!(125+500, 900, "stretched", :white)
 ```
+
 </details>
 
 ![stretch](./images/stretch-t.png)
@@ -294,7 +304,7 @@ annotate!(125+500, 900, "stretched", :white)
 Warp the axis, while the starting and ending points of the axis remain the same.
 
 <details>
-<summary> Code </summary>
+
 ```julia
 begin
     oldids, newids = quadwarpmap(0.9, 2560);
@@ -326,6 +336,7 @@ begin
          bg_legend = :transparent)
 end
 ```
+
 </details>
 
 ![warp mapping](./images/warp-map.png)
@@ -357,7 +368,7 @@ abssinwarp(s::AbstractArray{T}, k::Int=rand(20:5:50), a::AbstractFloat=rand(-1:0
 let's apply them to spectrum without time information
 
 <details>
-<summary> Code </summary>
+
 ```julia
 psqrt = sqrtwarp(p, 0.7);
 pquad = quadwarp(p, 0.7);
@@ -371,6 +382,7 @@ plot!(f, psin, label="sinwarp", framestyle=:zerolines);
 plot!(f, pabs, label="abssinwarp", framestyle=:zerolines);
 plot(plt1, plt2, layout=(2,1))
 ```
+
 </details>
 
 ![warp](./images/warp.png)
@@ -378,7 +390,7 @@ plot(plt1, plt2, layout=(2,1))
 and to time-frequency spectrum at frequency dimension
 
 <details>
-<summary> Code </summary>
+
 ```julia
 Xsqrt = sqrtwarp(X, 0.6, dim=1);
 Xquad = quadwarp(X, 0.6, dim=1);
@@ -394,6 +406,7 @@ annotate!(125+250, 900, "sinwarp",  :white)
 annotate!(125+500, 900, "abssinwarp",   :white)
 plot(plt1, plt2, layout=(2,1))
 ```
+
 </details>
 
 ![warp](./images/warp-f.png)
@@ -401,7 +414,7 @@ plot(plt1, plt2, layout=(2,1))
 and to time-frequency spectrum at time dimension
 
 <details>
-<summary> Code </summary>
+
 ```julia
 Xsqrt = sqrtwarp(X, 0.6, dim=2);
 Xquad = quadwarp(X, 0.6, dim=2);
@@ -417,6 +430,7 @@ annotate!(125+250, 900, "sinwarp",  :white)
 annotate!(125+500, 900, "abssinwarp",   :white)
 plot(plt1, plt2, layout=(2,1))
 ```
+
 </details>
 
 ![warp](./images/warp-t.png)
