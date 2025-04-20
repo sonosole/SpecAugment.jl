@@ -1,18 +1,18 @@
-export quadwrap, quadwrapmap
-export sqrtwrap, sqrtwrapmap
-export sinwrap, sinwrapmap
-export abssinwrap, abssinwrapmap
+export quadwarp, quadwarpmap
+export sqrtwarp, sqrtwarpmap
+export sinwarp, sinwarpmap
+export abssinwarp, abssinwarpmap
 
 
 # 对坐标轴进行扭曲，但是坐标轴的起点跟终点保持不变
 
 """
-    quadwrap(s::AbstractArray{T}, a::AbstractFloat=rand(T); dim::Int=1) where T <: Real
+    quadwarp(s::AbstractArray{T}, a::AbstractFloat=rand(T); dim::Int=1) where T <: Real
 
-Move peak to the right side by quadratic wrapping along dimension `dim`. 
+Move peak to the right side by quadratic warpping along dimension `dim`. 
 0 ≤ `a` ≤ 1, if `a`==0, then peaks stand still, the closer the value of 
 a is to 1, the more the peaks shift to the right. Test the effect via 
-function `quadwrapmap`.
+function `quadwarpmap`.
 
 # Math
     y(x) = a*x² + b*x
@@ -24,9 +24,9 @@ function `quadwrapmap`.
     ⟹  a*b > 0 
     ⟹  a>0 and b>0
 
-then chose `y(x)` be the wrapping mapping.
+then chose `y(x)` be the warpping mapping.
 """
-function quadwrap(s::AbstractArray{T}, a::AbstractFloat=rand(T); dim::Int=1) where T <: Real
+function quadwarp(s::AbstractArray{T}, a::AbstractFloat=rand(T); dim::Int=1) where T <: Real
     @assert 0 ≤ a ≤ 1 "0 ≤ a ≤ 1, but got $a"
     b = one(T) - a
 
@@ -42,15 +42,15 @@ end
 
 
 """
-    quadwrapmap(a::AbstractFloat, length_at_dim::Int) -> old_indices, new_indices
+    quadwarpmap(a::AbstractFloat, length_at_dim::Int) -> old_indices, new_indices
 
-Test the wrapping effect of `quadwrap`.
+Test the warpping effect of `quadwarp`.
 
 # Example
 ```julia-repl
 julia> begin
            using Plots
-           oldids, newids = quadwrapmap(0.9, 2560);
+           oldids, newids = quadwarpmap(0.9, 2560);
            plot(oldids, oldids, label="origin mapping");
            plot!(oldids, newids, label="re-mapping")
            xlabel!("input indices");
@@ -58,7 +58,7 @@ julia> begin
        end
 ```
 """
-function quadwrapmap(a::AbstractFloat, length_at_dim::Int)
+function quadwarpmap(a::AbstractFloat, length_at_dim::Int)
     @assert 0 ≤ a ≤ 1 "0 ≤ a ≤ 1, but got $a"
     b = 1 - a
     N = length_at_dim
@@ -72,12 +72,12 @@ end
 
 
 """
-    sqrtwrap(s::AbstractArray{T}, a::AbstractFloat=rand(T); dim::Int=1) where T <: Real
+    sqrtwarp(s::AbstractArray{T}, a::AbstractFloat=rand(T); dim::Int=1) where T <: Real
 
-Move peak to the left side by quadratic wrapping along dimension `dim`. 
+Move peak to the left side by quadratic warpping along dimension `dim`. 
 0 ≤ `a` ≤ 1, if `a`==1, then peaks stand still, the closer the value of 
 a is to 0, the more the peaks shift to the left. Test the effect via 
-function `sqrtwrapmap`.
+function `sqrtwarpmap`.
 
 # Math
     y(x) = a*x² + b*x
@@ -89,9 +89,9 @@ function `sqrtwrapmap`.
     ⟹  a*b > 0 
     ⟹  a>0 and b>0
 
-then chose `z(x) = √y(x)` be the wrapping mapping.
+then chose `z(x) = √y(x)` be the warpping mapping.
 """
-function sqrtwrap(s::AbstractArray{T}, a::AbstractFloat=rand(T); dim::Int=1) where T <: Real
+function sqrtwarp(s::AbstractArray{T}, a::AbstractFloat=rand(T); dim::Int=1) where T <: Real
     @assert 0 ≤ a ≤ 1 "0 ≤ a ≤ 1, but got $a"
     b = one(T) - a
 
@@ -107,15 +107,15 @@ end
 
 
 """
-    sqrtwrapmap(a::AbstractFloat, length_at_dim::Int) -> old_indices, new_indices
+    sqrtwarpmap(a::AbstractFloat, length_at_dim::Int) -> old_indices, new_indices
 
-Test the wrapping effect of `sqrtwrap`.
+Test the warpping effect of `sqrtwarp`.
 
 # Example
 ```julia-repl
 julia> begin
            using Plots
-           oldids, newids = sqrtwrapmap(0.3, 2560);
+           oldids, newids = sqrtwarpmap(0.3, 2560);
            plot(oldids, oldids, label="origin mapping");
            plot!(oldids, newids, label="re-mapping")
            xlabel!("input indices");
@@ -123,7 +123,7 @@ julia> begin
        end
 ```
 """
-function sqrtwrapmap(a::AbstractFloat, length_at_dim::Int)
+function sqrtwarpmap(a::AbstractFloat, length_at_dim::Int)
     @assert 0 ≤ a ≤ 1 "0 ≤ a ≤ 1, but got $a"
     b = 1 - a
     N = length_at_dim
@@ -137,21 +137,21 @@ end
 
 
 """
-    sinwrap(s::AbstractArray{T}, k::Int=rand(20:5:50), a::AbstractFloat=rand(-1:0.2:1); dim::Int=1) where T <: Real
+    sinwarp(s::AbstractArray{T}, k::Int=rand(20:5:50), a::AbstractFloat=rand(-1:0.2:1); dim::Int=1) where T <: Real
 
-Perturbate peaks by sinusoidal wrapping along dimension `dim`. 
+Perturbate peaks by sinusoidal warpping along dimension `dim`. 
 The half-periodic number `k` > 0, bigger `k` causes less distortion of the peak.
 The amplitude of sine-wave's derivative `|a|` ≤ 1, larger `|a|` causes more distortion of the peak. 
-Test the effect via function `sinwrapmap`.
+Test the effect via function `sinwarpmap`.
 # Math
     y(x) = x + a*sin(kπ*x) / kπ
     y(0) = 0 + 0 = 0
     y(1) = 1 + 0 = 1
     y'(x) = 1 + a*cos(kπ*x) > 0
 
-then chose `y(x)` be the wrapping mapping.
+then chose `y(x)` be the warpping mapping.
 """
-function sinwrap(s::AbstractArray{T}, k::Int=rand(20:5:50), amplitude::AbstractFloat=rand(-1:0.2:1); dim::Int=1) where T <: Real
+function sinwarp(s::AbstractArray{T}, k::Int=rand(20:5:50), amplitude::AbstractFloat=rand(-1:0.2:1); dim::Int=1) where T <: Real
     @assert k > 0 "k > 0, but got $k"
     @assert -1 ≤ amplitude ≤ 1 "-1 ≤ amplitude ≤ 1, but got $amplitude"
     a = T(amplitude)
@@ -168,15 +168,15 @@ end
 
 
 """
-    sinwrapmap(k::Int, amplitude::AbstractFloat, length_at_dim::Int) -> old_indices, new_indices
+    sinwarpmap(k::Int, amplitude::AbstractFloat, length_at_dim::Int) -> old_indices, new_indices
 
-Test the wrapping effect of `sinwrap`.
+Test the warpping effect of `sinwarp`.
 
 # Example
 ```julia-repl
 julia> begin
            using Plots
-           oldids, newids = sinwrapmap(4, 0.7, 1024);
+           oldids, newids = sinwarpmap(4, 0.7, 1024);
            plot(oldids, oldids, label="origin mapping");
            plot!(oldids, newids, label="re-mapping")
            xlabel!("input indices");
@@ -184,7 +184,7 @@ julia> begin
        end
 ```
 """
-function sinwrapmap(k::Int, amplitude::AbstractFloat, length_at_dim::Int)
+function sinwarpmap(k::Int, amplitude::AbstractFloat, length_at_dim::Int)
     @assert k > 0 "k > 0, but got $k"
     @assert -1 ≤ amplitude ≤ 1 "-1 ≤ amplitude ≤ 1, but got $amplitude"
     kπ   = k * π
@@ -201,21 +201,21 @@ end
 
 
 """
-    abssinwrap(s::AbstractArray{T}, k::Int=rand(20:5:50), a::AbstractFloat=rand(-1:0.2:1); dim::Int=1) where T <: Real
+    abssinwarp(s::AbstractArray{T}, k::Int=rand(20:5:50), a::AbstractFloat=rand(-1:0.2:1); dim::Int=1) where T <: Real
 
-Perturbate peaks by sinusoidal wrapping along dimension `dim`. 
+Perturbate peaks by sinusoidal warpping along dimension `dim`. 
 The half-periodic number `k` > 0, bigger `k` causes less distortion of the peak.
 The amplitude of sine-wave's derivative `|a|` ≤ 1, larger `|a|` causes more distortion of the peak. 
-Test the effect via function `abssinwrapmap`.
+Test the effect via function `abssinwarpmap`.
 # Math
     y(x) = x + a*|sin(kπ*x) / kπ|
     y(0) = 0 + 0 = 0
     y(1) = 1 + 0 = 1
     y'(x) = 1 + a*cos(kπ*x) > 0
 
-then chose `y(x)` be the wrapping mapping.
+then chose `y(x)` be the warpping mapping.
 """
-function abssinwrap(s::AbstractArray{T}, k::Int=rand(20:5:50), amplitude::AbstractFloat=rand(-1:0.2:1); dim::Int=1) where T <: Real
+function abssinwarp(s::AbstractArray{T}, k::Int=rand(20:5:50), amplitude::AbstractFloat=rand(-1:0.2:1); dim::Int=1) where T <: Real
     @assert k > 0 "k > 0, but got $k"
     @assert -1 ≤ amplitude ≤ 1 "-1 ≤ amplitude ≤ 1, but got $amplitude"
     a = T(amplitude)
@@ -233,15 +233,15 @@ end
 
 
 """
-    abssinwrapmap(k::Int, amplitude::AbstractFloat, length_at_dim::Int) -> old_indices, new_indices
+    abssinwarpmap(k::Int, amplitude::AbstractFloat, length_at_dim::Int) -> old_indices, new_indices
 
-Test the wrapping effect of `abssinwrap`.
+Test the warpping effect of `abssinwarp`.
 
 # Example
 ```julia-repl
 julia> begin
            using Plots
-           oldids, newids = abssinwrapmap(3, 0.8, 2560);
+           oldids, newids = abssinwarpmap(3, 0.8, 2560);
            plot(oldids, oldids, label="origin mapping");
            plot!(oldids, newids, label="re-mapping")
            xlabel!("input indices");
@@ -249,7 +249,7 @@ julia> begin
        end
 ```
 """
-function abssinwrapmap(k::Int, amplitude::AbstractFloat, length_at_dim::Int)
+function abssinwarpmap(k::Int, amplitude::AbstractFloat, length_at_dim::Int)
     @assert k > 0 "k > 0, but got $k"
     @assert -1 ≤ amplitude ≤ 1 "-1 ≤ amplitude ≤ 1, but got $amplitude"
     kπ   = k * π
