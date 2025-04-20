@@ -74,7 +74,7 @@ end
 """
     sqrtwarp(s::AbstractArray{T}, a::AbstractFloat=rand(T); dim::Int=1) where T <: Real
 
-Move peak to the left side by quadratic warpping along dimension `dim`. 
+Move peak to the left side by squared-quadratic warpping along dimension `dim`. 
 0 ≤ `a` ≤ 1, if `a`==1, then peaks stand still, the closer the value of 
 a is to 0, the more the peaks shift to the left. Test the effect via 
 function `sqrtwarpmap`.
