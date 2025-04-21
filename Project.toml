@@ -10,6 +10,8 @@ julia = "1"
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+ChirpSignal = "f60141a0-4cd3-11eb-3573-695a6f1942a1"
+AcousticFeatures = "6a458947-61d4-43a6-b30c-4a7a83d249ad"
 
 [targets]
-test = ["Plots", "Test"]
+test = ["AcousticFeatures" ,"ChirpSignal", "Plots", "Test"]
